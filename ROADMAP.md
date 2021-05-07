@@ -1,0 +1,49 @@
+# ROADMAP
+
+- [ ] toast dot.
+- [ ] toast json.
+- [ ] toast graphql.
+- [ ] toast nginx conf.
+- [ ] toast regex.
+- [ ] toast ini.
+- [ ] toast csv.
+- [ ] toast css.
+- [ ] toast xpath.
+- [ ] toast sed.
+- [ ] toast gawk.
+- [ ] toast hcl.
+- [ ] toast terraform.
+- [ ] toast jq.
+- [ ] toast sqlite3-dialect sql.
+- [ ] toast python.
+- [ ] toast golang.
+- [ ] toast java.
+- [ ] toast zig.
+- [ ] toast abnf.
+- [ ] toast algol60.
+- [ ] toast brainfuck.
+- [ ] toast c.
+- [ ] toast clojure.
+- [ ] toast hjson.
+- [ ] toast jsonnet.
+- [ ] toast javadoc.
+- [ ] toast lua.
+- [ ] toast mckeeman-form.
+- [ ] toast influxdb line protocol.
+- [ ] toast env file.
+- [ ] toast memcached protocol.
+- [ ] toast beanstalkd protocol.
+- [ ] toast php.
+- [ ] toast ruby.
+- [ ] toast nim.
+- [ ] toast rust.
+- [ ] toast kotlin.
+- [ ] toast prolog.
+- [ ] toast promql.
+- [ ] toast properties.
+- [ ] toast scss.
+- [ ] toast scala.
+- [ ] toast swift.
+- [ ] toast url.
+- [ ] toast html.
+- [ ] toast yaml.
