@@ -29,7 +29,7 @@ typedef enum {
     ToastJsonWhitespace,
 } ToastJsonRuleID;
 
-P4_Grammar*  ToastCreateJsonGrammar() {
+P4_Grammar*  ToastLoadJsonGrammar() {
     return P4_LoadGrammar(
         "@lifted\n"
         "entry = &. value !.;\n"
@@ -73,6 +73,48 @@ P4_Grammar*  ToastCreateJsonGrammar() {
         "@spaced @lifted\n"
         "whitespace = \" \" / \"\\r\" / \"\\n\" / \"\\t\";\n"
     );
+}
+
+P4_Error ToastParseJson(char* input) {
+    P4_Error err = P4_Ok;
+    P4_Grammar* json_grammar = NULL;
+    P4_Source* json_source = NULL;
+    P4_Token* json_root = NULL;
+
+    json_grammar = ToastLoadJsonGrammar();
+    if (json_grammar == NULL) {
+        err = P4_MemoryError;
+        fprintf(stderr, "failed to create json grammar.\n");
+        goto finalize;
+    }
+
+    json_source = P4_CreateSource(input, ToastJsonEntry);
+    if (json_source == NULL) {
+        err = P4_MemoryError;
+        fprintf(stderr, "failed to create json source.\n");
+        goto finalize;
+    }
+
+    if ((err = P4_Parse(json_grammar, json_source)) != P4_Ok) {
+        fprintf(stderr, "failed to parse json: %s.\n", P4_GetErrorMessage(json_source));
+        goto finalize;
+    }
+
+    json_root = P4_GetSourceAst(json_source);
+    if (json_root == NULL) {
+        err = P4_ValueError;
+        fprintf(stderr, "failed to get json parse tree root.\n");
+        goto finalize;
+    }
+
+    P4_JsonifySourceAst(json_grammar, stdout, json_root);
+
+finalize:
+
+    if (json_source) P4_DeleteSource(json_source);
+    if (json_grammar) P4_DeleteGrammar(json_grammar);
+
+    return err;
 }
 
 #ifdef __cplusplus
