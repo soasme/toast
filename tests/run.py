@@ -23,15 +23,17 @@ def main(lang):
 
         if process.returncode != 0:
             if not (filename.startswith('n_') or filename.startswith('i_')):
-                sys.stdout.write(f'FAILED: {filename} (Exit {process.returncode}). Error: {process.stderr.decode("utf-8")}')
+                sys.stdout.write(f'FAILED: {filename} (Exit {process.returncode}) Error: {process.stderr.decode("utf-8")}')
                 sys.stdout.flush()
                 failed += 1
                 continue
-            sys.stdout.write(f'PASS: {filename} (Exit {process.returncode}). Error: {process.stderr.decode("utf-8")}')
+            sys.stdout.write(f'PASS: {filename} (Exit {process.returncode}) Error: {process.stderr.decode("utf-8")}')
             sys.stdout.flush()
         else:
             # TODO: check expected ast output?
-            sys.stdout.write(f'PASS: {filename}. Output: {process.stdout.decode("utf-8")}\n')
+            output = process.stdout
+
+            sys.stdout.write(f'PASS: {filename} Output: {output.decode("utf-8")}\n')
             sys.stdout.flush()
 
     print("-" * 30)
