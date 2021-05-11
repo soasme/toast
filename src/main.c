@@ -5,6 +5,7 @@
 
 #include "peppapeg.h"
 #include "lang-json.h"
+#include "lang-es6.h"
 
 static char* readFile(const char* path) {
     char* buf = NULL;
@@ -54,6 +55,17 @@ main(int argc, char* argv[]) {
             err = ToastParseJson(json_input);
 
         free(json_input);
+        return err;
+    }
+
+    if (strcmp(lang, "es6") == 0) {
+        P4_Error    err         = P4_InternalError;
+        char*       es6_input   = readFile(path);
+
+        if (es6_input)
+            err = Toast_ParseES6(es6_input);
+
+        free(es6_input);
         return err;
     }
 
