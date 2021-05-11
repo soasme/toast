@@ -10,6 +10,20 @@ extern "C"
 
 P4_Grammar*  Toast_LoadES6Grammar() {
     return P4_LoadGrammar(
+        "@squashed StringLiteral = (\"\\\"\" DoubleStringCharacters? \"\\\"\") / (\"'\" SingleStringCharacters? \"'\");\n"
+        "DoubleStringCharacters = DoubleStringCharacter+;\n"
+        "SingleStringCharacters = SingleStringCharacter+;\n"
+        "@squashed DoubleStringCharacter = (!(\"\\\"\" / \"\\\\\" / LineTerminator) SourceCharacter) / (\"\\\\\" EscapeSequence) / LineContinuation;\n"
+        "@squashed SingleStringCharacter = (!(\"'\" / \"\\\\\" / LineTerminator) SourceCharacter) / (\"\\\\\" EscapeSequence) / LineContinuation;\n"
+        "LineContinuation = \"\\\\\" LineTerminatorSequence;\n"
+        "EscapeSequence = (CharacterEscapeSequence / (\"0\" !DecimalDigit)) / HexEscapeSequence / UnicodeEscapeSequence;\n"
+        "CharacterEscapeSequence = SingleEscapeCharacter / NonEscapeCharacter;\n"
+        "SingleEscapeCharacter =  \"'\" / \"\\\"\" / \"\\\\\" / \"b\" / \"f\" / \"n\" / \"r\" / \"t\" / \"v\";\n"
+        "NonEscapeCharacter = !(EscapeCharacter / LineTerminator) SourceCharacter;\n"
+        "SourceCharacter = [\\u{0001}-\\u{FFFC}]; # 0000-FFFC? \n"
+        "EscapeCharacter = SingleEscapeCharacter / DecimalDigit / \"x\" / \"u\";\n"
+        "HexEscapeSequence = \"x\" HexDigit HexDigit;\n"
+        "UnicodeEscapeSequence = \"u\" HexDigit{4} / \"u{\" HexDigit{4} \"}\";\n"
         "NullLiteral = \"null\";\n"
         "BooleanLiteral = \"true\" / \"false\";\n"
         "@squashed NumericLiteral = HexIntegerLiteral / BinaryIntegerLiteral / OctalIntegerLiteral / DecimalIntegerLiteral;\n"
@@ -29,6 +43,10 @@ P4_Grammar*  Toast_LoadES6Grammar() {
         "@squashed @tight HexIntegerLiteral = (\"0x\" / \"0X\") HexDigits;\n"
         "@squashed @tight HexDigits = HexDigit+;\n"
         "HexDigit = [a-f] / [A-F] / [0-9];\n"
+
+        "WhiteSpace = \"\\u{0009}\" / \"\\u{000B}\" / \"\\u{000C}\" / \"\\u{0020}\" / \"\\u{00A0}\" / \"\\u{FEFF}\" / [\\u{02B0}-\\u{02FF}];\n"
+        "LineTerminator = \"\\u{000A}\" / \"\\u{000D}\" / \"\\u{2028}\" / \"\\u{2029}\";\n"
+        "LineTerminatorSequence = \"\\u{000A}\" / (\"\\u{000D}\" !\"\\u{000A}\") / \"\\u{2028}\" / \"\\u{2029}\" / (\"\\u{000D}\\u{000A}\");\n"
     );
 }
 
